@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Encryption Project</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f9;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+      }
+      textarea,
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px 0;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .output {
+        margin-top: 20px;
+      }
+      .output textarea {
+        background-color: #f1f1f1;
+        color: #333;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Cypher</h2>
+
+      <!-- Input fields -->
+      <label for="inputText">Enter Text to Encrypt:</label>
+      <textarea
+        id="inputText"
+        rows="4"
+        placeholder="Enter your text here..."
+      ></textarea>
+
+      <label for="key">Enter Encryption Key:</label>
+      <input type="text" id="key" placeholder="Enter encryption key" />
+
+      <!-- Buttons -->
+      <button onclick="encryptText()">Encrypt Text</button>
+      <button onclick="decryptText()">Decrypt Text</button>
+
+      <div class="output">
+        <h3>Encrypted/Decrypted Output:</h3>
+        <textarea
+          id="outputText"
+          rows="4"
+          readonly
+          placeholder="Encrypted or decrypted text will appear here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <script>
+      // Function to encrypt the text
+      function encryptText() {
+        var inputText = document.getElementById("inputText").value;
+        var encryptionKey = document.getElementById("key").value;
+
+        if (inputText === "" || encryptionKey === "") {
+          alert("Please provide both text and encryption key.");
+          return;
+        }
+
+        // Encrypt using AES encryption
+        var encrypted = CryptoJS.AES.encrypt(
+          inputText,
+          encryptionKey
+        ).toString();
+
+        // Output the encrypted text
+        document.getElementById("outputText").value = encrypted;
+      }
+
+      // Function to decrypt the text
+      function decryptText() {
+        var encryptedText = document.getElementById("outputText").value;
+        var encryptionKey = document.getElementById("key").value;
+
+        if (encryptedText === "" || encryptionKey === "") {
+          alert("Please provide both encrypted text and encryption key.");
+          return;
+        }
+
+        // Decrypt using AES decryption
+        var bytes = CryptoJS.AES.decrypt(encryptedText, encryptionKey);
+        var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+
+        if (!decryptedText) {
+          alert("Invalid key or encrypted text.");
+        } else {
+          // Output the decrypted text
+          document.getElementById("outputText").value = decryptedText;
+        }
+      }
+    </script>
+  </body>
+</html>
